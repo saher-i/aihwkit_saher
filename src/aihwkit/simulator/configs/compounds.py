@@ -150,7 +150,7 @@ class ReferenceUnitCell(UnitCell):
     """Device that receives the update."""
 
     gamma_vec: List[float] = field(
-        default_factory=lambda: [1.0, -1.0], metadata={"hide_if": [5.0, -5.0, 1.0, -1.0]}
+        default_factory=lambda: [1.0, -1.0], metadata={"hide_if": [105.0, -105.0, 1.0, -1.0]}
         ## default_factory=lambda: [1.0, -1.0], metadata={"hide_if": [1.0, -1.0]}
     )
     """Weighting of the unit cell devices to reduce to final weight.
