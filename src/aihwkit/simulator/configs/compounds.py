@@ -150,7 +150,8 @@ class ReferenceUnitCell(UnitCell):
     """Device that receives the update."""
 
     gamma_vec: List[float] = field(
-        default_factory=lambda: [1.0, -1.0], metadata={"hide_if": [1.0, -1.0]}
+        default_factory=lambda: [1.0, -1.0], metadata={"hide_if": [3.0, -3.0, 1.0, -1.0]}
+        ## default_factory=lambda: [1.0, -1.0], metadata={"hide_if": [1.0, -1.0]}
     )
     """Weighting of the unit cell devices to reduce to final weight.
 
@@ -1125,3 +1126,76 @@ class MixedPrecisionCompound(DigitalRankUpdateCell):
             raise ConfigError("Could not add device parameter")
 
         return mixed_prec_parameter
+
+# from dataclasses import dataclass, field
+# from typing import List
+# from configs.devices import Extended_PulsedDevice
+#
+# @dataclass
+# class HierarchicalUnitCell:
+#     # Define the devices as lists of ExtendedPulsedDevice instances
+#     G_plus_devices: List[Extended_PulsedDevice]
+#     G_minus_devices: List[Extended_PulsedDevice]
+#     g_plus_devices: List[Extended_PulsedDevice]
+#     g_minus_devices: List[Extended_PulsedDevice]
+#     
+#     # gamma_vec represents the weighting factors for [G+, G-, g+, g-] respectively
+#     gamma_vec: List[float] = field(default_factory=lambda: [1.0, -1.0, 1.0, -1.0])
+#
+#     def calculate_effective_weight(self) -> float:
+#         """Calculate the effective weight based on device conductances and gamma_vec."""
+#         # Aggregate conductances for each device type
+#         G_plus_conductance = sum(device.get_conductance() for device in self.G_plus_devices)
+#         G_minus_conductance = sum(device.get_conductance() for device in self.G_minus_devices)
+#         g_plus_conductance = sum(device.get_conductance() for device in self.g_plus_devices)
+#         g_minus_conductance = sum(device.get_conductance() for device in self.g_minus_devices)
+#
+#         # Combine the conductances with their respective gamma factors
+#         conductances = [G_plus_conductance, G_minus_conductance, g_plus_conductance, g_minus_conductance]
+#         effective_weight = sum(gamma * conductance for gamma, conductance in zip(self.gamma_vec, conductances))
+#         
+#         return effective_weight
+#
+# class Extended_UnitCell:
+#     def __init__(self, G_plus_devices, G_minus_devices, g_plus_devices, g_minus_devices, significance_factor=1.0):
+#         # List of ExtendedPulsedDevice instances for G+, G-, g+, g-
+#         self.G_plus_devices = G_plus_devices  
+#         self.G_minus_devices = G_minus_devices  
+#         self.g_plus_devices = g_plus_devices  
+#         self.g_minus_devices = g_minus_devices
+#
+#         self.significance_factor = significance_factor
+#
+#     def calculate_effective_weight(self):
+#         """Calculate the effective weight correctly based on the provided formula."""
+#         G_plus_sum = sum(device.get_conductance() for device in self.G_plus_devices)
+#         G_minus_sum = sum(device.get_conductance() for device in self.G_minus_devices)
+#         g_plus_sum = sum(device.get_conductance() for device in self.g_plus_devices)
+#         g_minus_sum = sum(device.get_conductance() for device in self.g_minus_devices)
+#
+#         MSP_effective_conductance = self.significance_factor * (G_plus_sum - G_minus_sum)
+#         LSP_effective_conductance = g_plus_sum - g_minus_sum
+#
+#         # The total effective weight is the sum of the MSP and LSP contributions
+#         effective_weight = MSP_effective_conductance + LSP_effective_conductance
+#         return effective_weight
+#
+# ######### Code for testing #############
+#
+# # Initialize MSP and LSP devices
+# #MSP_devices = [Extended_PulsedDevice(conductance=0.05, polarity=1) for _ in range(2)]
+# #LSP_devices = [Extended_PulsedDevice(conductance=0.01, polarity=-1) for _ in range(2)]
+#
+# # Create a HierarchicalUnitCell with these devices
+# #hierarchical_cell = Extended_UnitCell(MSP_devices, LSP_devices, significance_factor=2.0)
+#
+# # Calculate the effective weight
+# #effective_weight = hierarchical_cell.calculate_effective_weight()
+# #print(f"Effective weight: {effective_weight}")
+#
+# # Simulate an update
+# #hierarchical_cell.update_devices(MSP_delta=0.02, LSP_delta=-0.005)
+# #new_effective_weight = hierarchical_cell.calculate_effective_weight()
+# #print(f"New effective weight: {new_effective_weight}")
+#
+#
