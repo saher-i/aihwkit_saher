@@ -197,6 +197,12 @@ class AnalogTile(TileModule, TileWithPeriphery, RPUCudaSimulatorTileWrapper):
         )
         TileWithPeriphery.__init__(self)
 
+#    def get_number_of_weights(self) -> int:
+ #       total_weights = self.out_size * self.in_size
+ #       if self.bias:
+#          total_weights += self.out_size
+#       return total_weights
+
     def _create_simulator_tile(
         self, x_size: int, d_size: int, rpu_config: RPUConfigGeneric
     ) -> tiles.AnalogTile:

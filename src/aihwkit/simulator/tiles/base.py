@@ -12,6 +12,7 @@
 
 """High level analog tiles (base)."""
 # pylint: disable=too-few-public-methods, abstract-method, too-many-instance-attributes
+import random
 
 from collections import OrderedDict
 from typing import Optional, Union, Tuple, Any, Dict, List
@@ -27,11 +28,13 @@ from torch.autograd import no_grad
 
 from aihwkit import __version__
 from aihwkit.exceptions import TileError
+from aihwkit.simulator.parameters import base
 from aihwkit.simulator.parameters.mapping import MappingParameter
 from aihwkit.simulator.parameters.base import RPUConfigGeneric
 from aihwkit.simulator.parameters.runtime import RuntimeParameter
 from aihwkit.simulator.parameters.enums import RPUDataType
 from aihwkit.optim.context import AnalogContext
+from aihwkit.simulator.tiles.analog import AnalogTile
 
 
 class TileModuleBase:
@@ -256,14 +259,17 @@ class SimulatorTile:
             strict: Whether to throw an error if keys are not found.
         """
 
-    def set_weights_uniform_random(self, bmin: float, bmax: float) -> None:
+    def set_weights_uniform_random(self, bmin1: float, bmax1: float, bmin2: float, bmax2: float) -> None:
         """Sets the weights to uniform random numbers.
 
         Args:
            bmin: min value
            bmax: max value
         """
-        raise NotImplementedError
+        new_weights = []
+        new_weights.append((3.0, -3.0, 1.0, -1.0))  # Append the tuple of four conductances
+        self.weights = new_weights
+        #raise NotImplementedError
 
     def get_meta_parameters(self) -> Any:
         """Returns meta parameters."""

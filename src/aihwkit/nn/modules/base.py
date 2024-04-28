@@ -308,10 +308,11 @@ class AnalogLayerBase:
             if isinstance(analog_tile, InferenceTileWithPeriphery):
                 analog_tile.drift_weights(t_inference)
 
-    def program_analog_weights(self, noise_model: Optional["BaseNoiseModel"] = None, conductance_levels: int = 4) -> None:
+    def program_analog_weights(self, g1 = 3.0, g2 = -3.0, g3 = 1.0, g4 = -1.0, noise_model: Optional["BaseNoiseModel"] = None) -> None:
         """Program the analog weights.
 
         Args:
+        g1, g2, g3, g4: Conductance values to be programmed.
             noise_model: Optional defining the noise model to be
                 used. If not given, it will use the noise model
                 defined in the `RPUConfig`.
@@ -328,9 +329,7 @@ class AnalogLayerBase:
         if self.training:  # type: ignore
             raise ModuleError("program_analog_weights can only be applied in evaluation mode")
         for analog_tile in self.analog_tiles():
-            for level in range(conductance_levels):
-                ##### Added ####
-                analog_tile.program_weights(noise_model=noise_model, conductance_level = level)
+            analog_tile.program_weights(g1, g2, g3, g4, noise_model=noise_model)
 
     def extra_repr(self) -> str:
         """Set the extra representation of the module.

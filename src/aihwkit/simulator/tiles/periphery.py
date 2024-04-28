@@ -227,6 +227,10 @@ class TileWithPeriphery(BaseTile, SimulatorTileWrapper):
     @no_grad()
     def program_weights(
         self,
+        g1: float,
+        g2: float,
+        g3: float,
+        g4: float,
         from_reference: bool = True,
         x_values: Optional[Tensor] = None,
         learning_rate: float = 0.1,
@@ -241,6 +245,7 @@ class TileWithPeriphery(BaseTile, SimulatorTileWrapper):
         and matching inputs (`x_values` by default `eye`).
 
         Args:
+            g1, g2, g3, g4: Conductance values used
 
             from_reference: Whether to use weights from reference
                 (those that were initally set with `set_weights`) or
@@ -272,7 +277,7 @@ class TileWithPeriphery(BaseTile, SimulatorTileWrapper):
         if isinstance(w_init, Tensor):
             self.tile.set_weights(w_init)
         else:
-            self.tile.set_weights_uniform_random(-w_init, w_init)  # type: ignore
+            self.tile.set_weights_uniform_random(-w_init, w_init, -3* w_init, 3* w_init)  # type: ignore
 
         lr_save = self.tile.get_learning_rate()  # type: ignore
         self.tile.set_learning_rate(learning_rate)  # type: ignore
