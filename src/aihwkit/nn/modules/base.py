@@ -330,7 +330,7 @@ class AnalogLayerBase:
         for analog_tile in self.analog_tiles():
             for level in range(conductance_levels):
                 ##### Added ####
-                analog_tile.program_weights(noise_model=noise_model)
+                analog_tile.program_weights(noise_model=noise_model, conductance_level = level)
 
     def extra_repr(self) -> str:
         """Set the extra representation of the module.
