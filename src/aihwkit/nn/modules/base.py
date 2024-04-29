@@ -293,7 +293,7 @@ class AnalogLayerBase:
                     break
         self._ddp_params_and_buffers_to_ignore = exclude_params
 
-    def drift_analog_weights(self, t_inference: float = 0.0) -> None:
+    def drift_analog_weights(self, t_inference: float = 0.0, g1=3.0, g2=-3.0, g3=1.0, g4=-1.0) -> None:
         """(Program) and drift the analog weights.
 
         Args:
@@ -306,7 +306,7 @@ class AnalogLayerBase:
             raise ModuleError("drift_analog_weights can only be applied in evaluation mode")
         for analog_tile in self.analog_tiles():
             if isinstance(analog_tile, InferenceTileWithPeriphery):
-                analog_tile.drift_weights(t_inference)
+                analog_tile.drift_weights(t_inference, g1, g2, g3, g4)
 
     def program_analog_weights(self, g1 = 3.0, g2 = -3.0, g3 = 1.0, g4 = -1.0, noise_model: Optional["BaseNoiseModel"] = None) -> None:
         """Program the analog weights.

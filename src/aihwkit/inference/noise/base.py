@@ -124,10 +124,12 @@ class BaseNoiseModel:
 
         noisy_conductances = []
         for g_target, drift_noise_param in zip(target_conductances, drift_noise_parameters):
-            noisy_conductances.append(
+            noisy_slice = []
+            for g_single, drift_param in zip(g_target, drift_noise_param_set):
+                noisy_slice.append(
                 self.apply_drift_noise_to_conductance(g_target, drift_noise_param, t_inference)
             )
-
+            noisy_conductances.append(noisy_slice)
         noisy_weights = self.g_converter.convert_back_to_weights(noisy_conductances, params)
 
         return noisy_weights

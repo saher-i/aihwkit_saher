@@ -188,7 +188,7 @@ class InferenceTileWithPeriphery(TileWithPeriphery):
             self.drift_baseline = self.rpu_config.drift_compensation.init_baseline(forward_output)
 
     @no_grad()
-    def drift_weights(self, t_inference: float = 0.0) -> None:
+    def drift_weights(self, t_inference: float = 0.0, g1 = 3.0, g2 = -3.0, g3 = 1.0, g4 = -1.0) -> None:
         """Programs and drifts the current reference weights.
 
         The current weight reference is either the current weights or
@@ -220,7 +220,7 @@ class InferenceTileWithPeriphery(TileWithPeriphery):
             self.drift_noise_parameters = self.__dict__.pop("nu_drift_list")
 
         drifted_weights = self.rpu_config.noise_model.apply_drift_noise(
-            self.programmed_weights, self.drift_noise_parameters, t_inference
+            self.programmed_weights, self.drift_noise_parameters, t_inference, g1, g2, g3, g4
         )
         self.tile.set_weights(drifted_weights)
 
