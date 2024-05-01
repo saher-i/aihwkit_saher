@@ -23,7 +23,7 @@ from torch.autograd import no_grad
 
 from aihwkit.inference.noise.base import BaseNoiseModel
 from aihwkit.inference.converter.base import BaseConductanceConverter
-from aihwkit.inference.converter.conductance import SinglePairConductanceConverter
+from aihwkit.inference.converter.conductance import SinglePairConductanceConverter, DualPairConductanceConverter
 
 
 class StateIndependentNoiseModel(BaseNoiseModel):  # pylint: disable=too-many-instance-attributes
@@ -127,7 +127,8 @@ class StateIndependentNoiseModel(BaseNoiseModel):  # pylint: disable=too-many-in
         read_noise_scale: float = 1.0,
         t_read: float = 250.0e-9,
     ):
-        g_converter = deepcopy(g_converter) or SinglePairConductanceConverter(g_max=g_max)
+        # g_converter = deepcopy(g_converter) or SinglePairConductanceConverter(g_max=g_max)
+        g_converter = DualPairConductanceConverter(g_max=g_max)
         super().__init__(g_converter)
 
         self.g_max = getattr(self.g_converter, "g_max", g_max)

@@ -80,3 +80,68 @@ class SinglePairConductanceConverter(BaseConductanceConverter):
         ]
 
         return weights
+
+class DualPairConductanceConverter(BaseConductanceConverter):
+    def __init__(self, g_max: Optional[float] = None, g_min: Optional[float] = None):
+        self.g_max = 25.0 if g_max is None else g_max
+        self.g_min = 0.0 if g_min is None else g_min
+        self.scale_ratio = None
+
+        if self.g_max < 0.0:
+            raise ValueError("g_max should be a positive value")
+        if self.g_min < 0.0:
+            raise ValueError("g_min should be a positive value")
+        if self.g_min >= self.g_max:
+            raise ValueError("g_min should be smaller than g_max")
+
+    def __str__(self) -> str:
+        return "{}(g_max={:1.2f}, g_min={:1.2f})".format(
+            self.__class__.__name__, self.g_max, self.g_min
+        )
+no_grad()
+    def convert_to_conductances(self, weights: Tensor) -> Tuple[List[Tensor], Dict]:
+        # Threshold to determine large vs small weights
+        threshold = weights.abs().mean()
+
+        # Compute conductances
+        conductances = [
+            torch.where(weights >= threshold, 3.0, 1.0),     # Large positive or small positive
+            torch.where(weights <= -threshold, -3.0, -1.0),  # Large negative or small negative
+        ]
+
+        # Dummy params dictionary as no scale ratio is used
+        params = {"threshold": threshold.item()}
+
+        return conductances, params 
+
+@no_grad()
+    def convert_back_to_weights(self, conductances: List[Tensor], params: Dict) -> Tensor:
+        if len(conductances) != 4:
+            raise ValueError("conductances must contain exactly FOUR elements")
+        pos_conductance, neg_conductance = conductances
+
+    # Reconstruct weights based on the conductance values and threshold
+        threshold = params['threshold']
+        weight_positive = torch.where(pos_conductance == 3.0, threshold * 1.5, threshold * 0.5)
+        weight_negative = torch.where(neg_conductance == -3.0, -threshold * 1.5, -threshold * 0.5)
+
+    # Combine positive and negative contributions
+         weights = weight_positive + weight_negative  # This is a simplistic approximation
+
+    return weights
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
