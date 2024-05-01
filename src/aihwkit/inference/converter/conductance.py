@@ -118,17 +118,13 @@ no_grad()
     def convert_back_to_weights(self, conductances: List[Tensor], params: Dict) -> Tensor:
         if len(conductances) != 4:
             raise ValueError("conductances must contain exactly FOUR elements")
-        pos_conductance, neg_conductance = conductances
+        if "scale_ratio" not in params:
+            raise ValueError("params do not contain scale_ratio")
 
-    # Reconstruct weights based on the conductance values and threshold
-        threshold = params['threshold']
-        weight_positive = torch.where(pos_conductance == 3.0, threshold * 1.5, threshold * 0.5)
-        weight_negative = torch.where(neg_conductance == -3.0, -threshold * 1.5, -threshold * 0.5)
-
-    # Combine positive and negative contributions
-         weights = weight_positive + weight_negative  # This is a simplistic approximation
-
-    return weights
+        weights = ((conductances[0] - self.g_min) - (conductances[1] - self.g_min)) / params[
+            "scale_ratio"
+        ]
+            return weights
 
 
 
