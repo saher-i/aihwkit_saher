@@ -46,7 +46,7 @@ cd src
 # Results and Observations
 
 The essential implementations encompassed the
-modification of gamma vec and the introduction
+modification of gamma_vec and the introduction
 of the DualPairConductanceConverter class. In ad-
 dition to these changes, adjustments were applied
 to various segments of the code to address issues
