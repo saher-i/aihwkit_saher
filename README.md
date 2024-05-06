@@ -16,7 +16,7 @@ In order to access and run the code on your local machine, please go through the
 
 Step 1:
 ```
-git https://github.com/saher-i/aihwkit_saher.git
+git clone https://github.com/saher-i/aihwkit_saher.git
 ```
 Step 2:
 ```
@@ -43,3 +43,7 @@ Changes made by me can be seen in the src directory:
 
 cd src
 ```
+# Results and Observations
+
+
+
