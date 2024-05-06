@@ -8,9 +8,9 @@ Analog in-memory compute (AIMC) represents a promising alternative architectural
 
 # Outline of the Code Respository
 
---> The repository consists of a 7 directories in total, my focus was on the modification of the 'src' directory.
---> For implementation of my project, I made changes in the inference, simulator and nn directory within the src directory.
---> In order to test my changes, I had to run the examples present in the examples directory.
+-  => The repository consists of a 7 directories in total, my focus was on the modification of the 'src' directory.
+-  => For implementation of my project, I made changes in the inference, simulator and nn directory within the src directory.
+-  => In order to test my changes, I had to run the examples present in the examples directory.
 
 In order to access and run the code on your local machine, please go through the following steps:
 
