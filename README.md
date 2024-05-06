@@ -54,5 +54,5 @@ and accommodate drift for four conductances, as
 opposed to the previous configuration for two conductances. These alterations collectively ensure the
 robustness and efficacy of our methodology in handling multiple conductance pairs while mitigating
 potential sources of error and enhancing overall
-performance
+performance.
 
