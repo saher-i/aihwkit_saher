@@ -45,5 +45,17 @@ cd src
 ```
 # Results and Observations
 
-
+The essential implementations encompassed the
+modification of gamma vec and the introduction
+of the DualPairConductanceConverter class. In ad-
+dition to these changes, adjustments were applied
+to various segments of the code to address issues
+related to programming errors, manage read noise,
+and accommodate drift for four conductances, as
+opposed to the previous configuration for two con-
+ductances. These alterations collectively ensure the
+robustness and efficacy of our methodology in han-
+dling multiple conductance pairs while mitigating
+potential sources of error and enhancing overall
+performance
 
